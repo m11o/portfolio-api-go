@@ -79,6 +79,7 @@ func main() {
 		if parseErr != nil {
 			log.Fatalf("Failed to parse form: %v", parseErr)
 			w.Write([]byte("failed to parse form"))
+			return
 		}
 		postForm := r.PostForm
 		fmt.Printf("%v", postForm)
@@ -101,6 +102,10 @@ func main() {
 			Born:  born,
 		}
 		json, err := json2.Marshal(user)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		r.Header.Set("Content-Type", "application/json")
 		w.Write(json)
