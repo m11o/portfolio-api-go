@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/go/src/app
+    environment:
+      - FIRESTORE_EMULATOR_HOST=firestore:8001
+      - PROJECT_ID=dummy-project
+    depends_on:
+      - firestore
+  firestore:
+    build:
+      context: .
+      dockerfile: ./firestore/Dockerfile
+    volumes:
+      - firestore-data:/opt/data
+    command: "gcloud beta emulators firestore start --host-port=0.0.0.0:8001"
+
+volumes:
+  firestore-data:
