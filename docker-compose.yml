@@ -11,6 +11,7 @@ services:
       - PROJECT_ID=dummy-project
     depends_on:
       - firestore
+    command: "go run main.go"
   firestore:
     build:
       context: .
